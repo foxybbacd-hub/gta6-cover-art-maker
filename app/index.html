@@ -3,20 +3,104 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Cover Snap</title>
+<title>Sunset Cover Maker — GTA 6-style poster maker</title>
 <link rel="stylesheet" href="./style.css">
 </head>
 <body>
 <main class="app">
-  <section class="controls">
-    <h1>Cover Snap</h1>
-    <p>A photo and a caption, made into a square cover.</p>
-    <label>Photo <input id="photo" type="file" accept="image/*"></label>
-    <label>Caption <input id="caption" type="text" maxlength="40" value="Sunset Heist"></label>
-    <button id="export" type="button">Export PNG 1080 x 1080</button>
-    <p id="status" role="status"></p>
+  <section class="stage">
+    <header class="stage-head">
+      <h1>Sunset Cover Maker</h1>
+      <p>Turn a photo and a caption into GTA 6-style cover art.</p>
+    </header>
+    <div class="canvas-wrap">
+      <canvas id="cover" width="1080" height="1080" aria-label="Cover preview"></canvas>
+      <p class="hint">Click a panel to select it, then drag the photo inside it to crop. Scroll over the cover to zoom the selected panel.</p>
+    </div>
+    <div class="shot-view" hidden>
+      <img id="shot-img" alt="Exported cover">
+    </div>
   </section>
-  <canvas id="cover" width="1080" height="1080" aria-label="The cover"></canvas>
+
+  <aside class="controls" aria-label="Cover controls">
+    <section class="group">
+      <h2>1 · Layout</h2>
+      <div class="row" id="layout-row">
+        <button type="button" data-layout="quad" class="picked">Quad · 2×2</button>
+        <button type="button" data-layout="hero">Hero + strip</button>
+        <button type="button" data-layout="trio">Trio columns</button>
+      </div>
+    </section>
+
+    <section class="group">
+      <h2>2 · Colour grade</h2>
+      <div class="row" id="grade-row">
+        <button type="button" data-grade="sunset" class="picked">Sunset</button>
+        <button type="button" data-grade="neon">Neon</button>
+        <button type="button" data-grade="noir">Noir</button>
+        <button type="button" data-grade="vice">Vice</button>
+      </div>
+    </section>
+
+    <section class="group">
+      <h2>3 · Photos</h2>
+      <div class="tray" id="tray"></div>
+      <label class="upload">Add your photos
+        <input id="upload" type="file" accept="image/*" multiple>
+      </label>
+      <p class="note">Selected panel: <strong id="panel-label">Panel 1</strong> — click a photo above to put it in the panel.</p>
+      <label class="slider">Zoom
+        <input id="zoom" type="range" min="1" max="3" step="0.01" value="1.15">
+      </label>
+      <div class="row">
+        <button type="button" id="fill-all">Fill all panels</button>
+        <button type="button" id="reset-crop">Reset crop</button>
+      </div>
+    </section>
+
+    <section class="group">
+      <h2>4 · Words</h2>
+      <label>Caption
+        <input id="caption" type="text" maxlength="28" value="Sunset Heist">
+      </label>
+      <label>Tagline
+        <input id="tagline" type="text" maxlength="40" value="A SUNSET STORY">
+      </label>
+      <label class="slider">Caption size
+        <input id="caption-size" type="range" min="0.6" max="1.5" step="0.05" value="1">
+      </label>
+      <div class="row">
+        <label class="inline">Position
+          <select id="caption-pos">
+            <option value="bottom" selected>Bottom</option>
+            <option value="top">Top</option>
+            <option value="center">Centre</option>
+          </select>
+        </label>
+        <label class="inline">Glow
+          <select id="caption-glow">
+            <option value="pink" selected>Pink</option>
+            <option value="cyan">Cyan</option>
+            <option value="gold">Gold</option>
+            <option value="none">None</option>
+          </select>
+        </label>
+        <label class="inline check"><input id="caption-outline" type="checkbox" checked> Outline</label>
+      </div>
+    </section>
+
+    <section class="group">
+      <h2>5 · Export</h2>
+      <div class="row" id="size-row">
+        <button type="button" data-size="1080x1080" class="picked">1080 × 1080</button>
+        <button type="button" data-size="1080x1350">1080 × 1350</button>
+        <button type="button" data-size="1920x1080">1920 × 1080</button>
+      </div>
+      <button type="button" id="export" class="export">Export PNG</button>
+      <p id="status" role="status"></p>
+    </section>
+    <p class="fine">Original art only — no game logos, artwork or fonts. Photos stay on your machine.</p>
+  </aside>
 </main>
 <script type="module" src="./src/main.js"></script>
 </body>
